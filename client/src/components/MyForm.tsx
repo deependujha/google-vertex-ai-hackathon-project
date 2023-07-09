@@ -1,5 +1,7 @@
 'use client';
 import React, { useState } from 'react';
+import axios from 'axios';
+import { errorAlert } from '@/utils/SweetAlert';
 
 const defaultForm = {
 	businessName: '',
@@ -19,10 +21,32 @@ const MyForm = () => {
 		setForm({ ...form, [name]: value });
 	};
 
-	const onBtnClick = () => {
-		console.log(form);
-		// reset form
+	const onBtnClick = async () => {
+		// console.log(form);
+		const response = await axios({
+			method: 'post',
+			url: 'http://127.0.0.1:8080/create-website',
+			data: { ...form },
+			responseType: 'blob',
+		});
+
+		// console.log('response: ', response.data);
+		// Create blob link to download
+		const href = URL.createObjectURL(response.data);
+
+		// create "a" HTML element with href to file & click
+		const link = document.createElement('a');
+		link.href = href;
+		link.setAttribute('download', 'myZipFile.zip'); //or any other extension
+		document.body.appendChild(link);
+		link.click();
+
+		// clean up "a" element & remove ObjectURL
+		document.body.removeChild(link);
+		URL.revokeObjectURL(href);
+
 		setForm(defaultForm);
+		// errorAlert();
 	};
 	return (
 		<div

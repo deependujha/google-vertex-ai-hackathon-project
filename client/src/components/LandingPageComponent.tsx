@@ -18,10 +18,16 @@ const LandingPageComponent = () => {
 					Make your online presence
 				</div>
 				<div
+					className={`text-3xl py-5 ${fasthand.className}`}
+					style={{ fontSize: '50px' }}
+				>
+					in 2 minutes ⏲️
+				</div>
+				<div
 					className={`text-3xl py-3 ${fasthand.className}`}
 					style={{ fontSize: '50px' }}
 				>
-					in 2 minutes...
+					in 2 dollars 💸
 				</div>
 			</div>
 			<Image
