@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { errorAlert } from '@/utils/SweetAlert';
+import MyLoadingModal from './MyLoadingModal';
 
 const defaultForm = {
 	businessName: '',
@@ -11,6 +12,32 @@ const defaultForm = {
 
 const MyForm = () => {
 	const [form, setForm] = useState(defaultForm);
+
+	function toggleModal() {
+		const body = document.querySelector('body');
+		const modal = document.querySelector('.modal');
+		// Check if 'opacity-0' class is present on modal
+		// @ts-ignore
+		const isOpacityZero = modal.classList.contains('opacity-0');
+
+		// Check if 'pointer-events-none' class is present on modal
+		// @ts-ignore
+		const isPointerEventsNone = modal.classList.contains('pointer-events-none');
+
+		// Check if 'modal-active' class is present on body
+		// @ts-ignore
+		const isModalActive = body.classList.contains('modal-active');
+
+		console.log(`isOpacityZero: ${isOpacityZero}`);
+		console.log(`isPointerEventsNone: ${isPointerEventsNone}`);
+		console.log(`isModalActive: ${isModalActive}`);
+		// @ts-ignore
+		modal.classList.toggle('opacity-0');
+		// @ts-ignore
+		modal.classList.toggle('pointer-events-none');
+		// @ts-ignore
+		body.classList.toggle('modal-active');
+	}
 
 	const onInputChange = (
 		e:
@@ -23,6 +50,7 @@ const MyForm = () => {
 
 	const onBtnClick = async () => {
 		// console.log(form);
+		toggleModal();
 		const response = await axios({
 			method: 'post',
 			url: 'http://127.0.0.1:8080/create-website',
@@ -37,7 +65,9 @@ const MyForm = () => {
 		// create "a" HTML element with href to file & click
 		const link = document.createElement('a');
 		link.href = href;
-		link.setAttribute('download', 'myZipFile.zip'); //or any other extension
+		toggleModal();
+
+		link.setAttribute('download', 'website.zip'); //or any other extension
 		document.body.appendChild(link);
 		link.click();
 
@@ -125,6 +155,7 @@ const MyForm = () => {
 					</div>
 				</div>
 			</div>
+			<MyLoadingModal toggleModal={toggleModal} />
 		</div>
 	);
 };

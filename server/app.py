@@ -139,8 +139,8 @@ def hello_world():
 def home():
     if request.method == "POST":
         data = request.get_json()
-        bulletPoints = getPoints(data["name"], data["desc"])
-        bulletPoints["name"] = data["name"]
+        bulletPoints = getPoints(data["businessName"], data["businessDescription"])
+        bulletPoints["name"] = data["businessName"]
 
         randomDirectoryName = "".join(
             random.choices(string.ascii_uppercase + string.digits, k=8)
