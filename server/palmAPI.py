@@ -2,7 +2,6 @@
 $ pip install google-generativeai
 """
 from dotenv import dotenv_values
-import pprint
 import google.generativeai as palm
 
 config = dotenv_values(".env")  # config = {"USER": "foo", "EMAIL": "foo@example.org"}
@@ -12,7 +11,7 @@ palm.configure(api_key=PALM_API_KEY)
 
 defaults = {
     "model": "models/text-bison-001",
-    "temperature": 0.7,
+    "temperature": 1,
     "candidate_count": 1,
     "top_k": 40,
     "top_p": 0.95,
@@ -35,6 +34,21 @@ def get_response_from_palmAPI(prompt):
     return response.result
 
 
-prompt = "What is the meaning of life?"
+prompt = """Generate 8 points for a person whose business name is:{busName} and its description is:{desc}. If not enough information is available, make assumptions from your side. 
+"""
+prompt_output = """Your response shoulde be a json object with the following format: {"points": ["point1", "point2", "point3", "point4", "point5", "point6", "point7", "point8"]}
+"""
 
-print(get_response_from_palmAPI(prompt))
+""" sample output:
+
+    type of response: <class 'dict'>
+
+    point:- Samosewala is a food delivery service that delivers samosas to your doorstep.
+    point:- It is a very popular service in New Delhi.
+    point:- Our customers love our samosas.
+    point:- Our samosas are made with the best ingredients.
+    point:- We offer a variety of samosas, including vegetarian, meat, and seafood options.
+    point:- We also offer a variety of sides, such as chutneys, salads, and naan.
+    point:- We are committed to providing our customers with the best possible experience.
+    point:- We are always looking for ways to improve our service, so please let us know if you have any feedback.
+"""
