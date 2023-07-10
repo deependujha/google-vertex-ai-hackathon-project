@@ -4,6 +4,7 @@ import random
 import string
 import json
 import os
+import requests
 from utilsHtml.htmlParts import (
     productDescription,
     navbarColor,
@@ -12,8 +13,14 @@ from utilsHtml.htmlParts import (
     leftHeading,
     contactAndCopyRight,
 )
+from dotenv import dotenv_values
+import threading
+
 from palmAPI import get_response_from_palmAPI, prompt, prompt_output
 import shutil
+config = dotenv_values(".env")  # config = {"USER": "foo", "EMAIL": "foo@example.org"}
+
+UNSPLASH_SECRET = config["UNSPLASH_SECRET"]
 
 
 app = Flask(__name__)
@@ -80,21 +87,70 @@ def getPoints(businessName, description):
     jsonResponse = json.loads(myResponse)
 
     print(jsonResponse)
+    query = jsonResponse["businessType"]
 
     bulletPoints = {
         f"desc{i + 1}": point for i, point in enumerate(jsonResponse["points"])
     }
     print(bulletPoints)
-    return bulletPoints
+    return bulletPoints, query
+
+
+def multiThreadingImageDownload(imgUrl, save_here_path):
+    myImg = requests.get(imgUrl, stream=True)
+    if myImg.status_code == 200:
+        with open(save_here_path, 'wb') as file:
+            for chunk in myImg.iter_content(1024):
+                file.write(chunk)
+            print(f"Image downloaded successfully and saved as {save_here_path}")
+    else:
+        print("Failed to download image")
+
+def download_image(url, save_path, headers=None):
+    response = requests.get(url, headers=headers, stream=True)
+    # print(f"response: {response.json()}")
+
+    fetchedJsonData = response.json()
+
+    thread = []
+    for i in range(5):
+        imgUrl = fetchedJsonData['results'][i]['urls']['raw']
+        save_here_path = f'{save_path}/img{str(i+1)}.jpg'
+        thread.append(
+            threading.Thread(target=multiThreadingImageDownload, args=(imgUrl, save_here_path))
+        )
+    
+    for t in thread:
+        t.start()
+
+    for t in thread:
+        t.join()
+    
+    print("All images downloaded successfully")
+
+
+# Example usage
+# image_url = 'https://api.unsplash.com/search/photos?query=sunset&page=1'  # Replace with the actual image URL
+# save_location = './images/image.jpg'     # Replace with the desired save location
+# auth_headers = {'Authorization': 'Client-ID {UNSPLASH_SECRET}'}  # Replace with the authorization headers
+
+# download_image(image_url, save_location, headers=auth_headers)
 
 
 # function to copy all the files from one directory to another
-def copyFiles(name):
+def copyFiles(name, query):
     path = os.path.join(destination, name)
     os.mkdir(path)
 
     # recursively copy entire directory tree
     copyTheWholeDirectory(source, path)
+
+    # download images in the images folder
+    image_url = f'https://api.unsplash.com/search/photos?query={query}&page=1'  # Replace with the actual image URL
+    save_location = f'./generatedWebsite/{name}/images'     # Replace with the desired save location
+    auth_headers = {'Authorization': f'Client-ID {UNSPLASH_SECRET}'}
+    download_image(image_url, save_location, headers=auth_headers)
+
 
 
 # function to write html to file
@@ -139,14 +195,14 @@ def hello_world():
 def home():
     if request.method == "POST":
         data = request.get_json()
-        bulletPoints = getPoints(data["businessName"], data["businessDescription"])
+        bulletPoints, query = getPoints(data["businessName"], data["businessDescription"])
         bulletPoints["name"] = data["businessName"]
 
         randomDirectoryName = "".join(
             random.choices(string.ascii_uppercase + string.digits, k=8)
         )
         print(randomDirectoryName)
-        copyFiles(randomDirectoryName)
+        copyFiles(randomDirectoryName, query)
         writeHtmlToFile(
             f"./generatedWebsite/{randomDirectoryName}/index.html", bulletPoints
         )

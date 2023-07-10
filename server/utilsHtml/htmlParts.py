@@ -77,10 +77,9 @@ navbarToCarousel = """
 				class="gallery js-flickity"
 				data-flickity-options='{ "wrapAround": true }'
 			>
-				<img src="images/carousel/img1.jpeg" class="gallery-cell" alt="" />
-				<img src="images/carousel/img2.jpeg" class="gallery-cell" alt="" />
-				<img src="images/carousel/img3.jpeg" class="gallery-cell" alt="" />
-				<img src="images/carousel/img4.jpeg" class="gallery-cell" alt="" />
+				<img src="images/img1.jpg" class="gallery-cell" alt="" />
+				<img src="images/img2.jpg" class="gallery-cell" alt="" />
+				<img src="images/img3.jpg" class="gallery-cell" alt="" />
 			</div>
 
 """
@@ -100,7 +99,7 @@ contactAndCopyRight = """
 				<div>
 					<div class="flex justify-around" style="width: 90vw">
 						<img
-							src="images/contact/img4.png"
+							src="images/img6.png"
 							style="width: 500px; height: 500px"
 							alt="contact"
 						/>
@@ -195,9 +194,10 @@ productDescription = """
 				<div>
 					<div class="flex justify-around" style="width: 90vw">
 						<img
-							src="images/contact/img4.png"
+							src="images/img4.jpg"
 							style="width: 500px; height: 500px"
 							alt="contact"
+                            class="rounded-full"
 						/>
 						<div class="px-5 self-center" style="max-width: 30vw">
 							<div class="text-white text-xl font-bold font-mono py-4">
@@ -239,9 +239,10 @@ productDescription = """
 							</div>
 						</div>
 						<img
-							src="images/contact/img2.png"
+							src="images/img5.jpg"
 							style="width: 500px; height: 500px"
 							alt="contact"
+                            class="rounded-full"
 						/>
 					</div>
 				</div>

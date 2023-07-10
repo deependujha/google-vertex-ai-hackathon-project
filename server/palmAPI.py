@@ -34,9 +34,9 @@ def get_response_from_palmAPI(prompt):
     return response.result
 
 
-prompt = """Generate 8 points for a person whose business name is:{busName} and its description is:{desc}. If not enough information is available, make assumptions from your side. 
+prompt = """Generate 8 points for a person whose business name is:{busName} and its description is:{desc}. If not enough information is available, make assumptions from your side. Also return a single word that describes the business.
 """
-prompt_output = """Your response shoulde be a json object with the following format: {"points": ["point1", "point2", "point3", "point4", "point5", "point6", "point7", "point8"]}
+prompt_output = """Your response shoulde be a json object with the following format: {"points": ["point1", "point2", "point3", "point4", "point5", "point6", "point7", "point8"], "businessType": "businessType"}
 """
 
 """ sample output:
