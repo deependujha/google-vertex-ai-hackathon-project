@@ -1,5 +1,7 @@
 # Google-Vertex-AI Hackathon 🔥
 
+## 2 minutes online ⏲️💸
+
 - Deployed URL: [https://google-vertex-ai-hackathon-project.vercel.app/](https://google-vertex-ai-hackathon-project.vercel.app/)
 
 ## setup
