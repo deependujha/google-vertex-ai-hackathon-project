@@ -53,7 +53,7 @@ const MyForm = () => {
 			console.log('going to make request');
 			const response = await axios({
 				method: 'post',
-				url: 'http://13.233.138.109/create-website',
+				url: 'https://drift-dao.com/create-website',
 				data: { ...form },
 				responseType: 'blob',
 			});
