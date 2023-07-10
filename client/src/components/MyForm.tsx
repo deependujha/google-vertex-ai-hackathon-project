@@ -28,9 +28,6 @@ const MyForm = () => {
 		// @ts-ignore
 		const isModalActive = body.classList.contains('modal-active');
 
-		console.log(`isOpacityZero: ${isOpacityZero}`);
-		console.log(`isPointerEventsNone: ${isPointerEventsNone}`);
-		console.log(`isModalActive: ${isModalActive}`);
 		// @ts-ignore
 		modal.classList.toggle('opacity-0');
 		// @ts-ignore
@@ -50,33 +47,43 @@ const MyForm = () => {
 
 	const onBtnClick = async () => {
 		// console.log(form);
-		toggleModal();
-		const response = await axios({
-			method: 'post',
-			url: 'http://127.0.0.1:8080/create-website',
-			data: { ...form },
-			responseType: 'blob',
-		});
+		console.log('clicked on button');
+		try {
+			toggleModal();
+			console.log('going to make request');
+			const response = await axios({
+				method: 'post',
+				url: 'http://13.233.138.109/create-website',
+				data: { ...form },
+				responseType: 'blob',
+			});
 
-		// console.log('response: ', response.data);
-		// Create blob link to download
-		const href = URL.createObjectURL(response.data);
+			console.log('request successfull');
 
-		// create "a" HTML element with href to file & click
-		const link = document.createElement('a');
-		link.href = href;
-		toggleModal();
+			// console.log('response: ', response.data);
+			// Create blob link to download
+			const href = URL.createObjectURL(response.data);
 
-		link.setAttribute('download', 'website.zip'); //or any other extension
-		document.body.appendChild(link);
-		link.click();
+			// create "a" HTML element with href to file & click
+			const link = document.createElement('a');
+			link.href = href;
+			toggleModal();
 
-		// clean up "a" element & remove ObjectURL
-		document.body.removeChild(link);
-		URL.revokeObjectURL(href);
+			link.setAttribute('download', `${form.businessName}-website.zip`); //or any other extension
+			document.body.appendChild(link);
+			link.click();
 
-		setForm(defaultForm);
-		// errorAlert();
+			// clean up "a" element & remove ObjectURL
+			document.body.removeChild(link);
+			URL.revokeObjectURL(href);
+
+			setForm(defaultForm);
+		} catch {
+			toggleModal();
+			errorAlert();
+			console.log('error occurred');
+		}
+		console.log('everything over');
 	};
 	return (
 		<div

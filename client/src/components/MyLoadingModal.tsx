@@ -23,6 +23,13 @@ function MyLoadingModal({ toggleModal }: Prop) {
 						<div className="text-xl text-center font-bold">
 							Your website is being created 🖌️
 						</div>
+						<div className="py-3">
+							Normally, it takes around 2-3 minutes. This is because, we are
+							sending the complete 15-20 mb file at once.
+						</div>
+						<div className="text-blue-500">
+							We will soon be adding a feature to send the file in chunks, to reduce the time by 90%.
+						</div>
 					</div>
 				</div>
 			</div>
