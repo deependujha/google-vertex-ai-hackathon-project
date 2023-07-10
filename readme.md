@@ -1,5 +1,7 @@
 # Google-Vertex-AI Hackathon 🔥
 
+- Deployed URL: [https://google-vertex-ai-hackathon-project.vercel.app/](https://google-vertex-ai-hackathon-project.vercel.app/)
+
 ## setup
 
 - Starting frontend in one terminal
